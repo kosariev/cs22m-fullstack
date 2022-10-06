@@ -92,7 +92,7 @@ async def get_token(form_data: OAuth2PasswordRequestForm = Depends()):
 @app.get("/users/me", response_model=UserInfo, tags=["User"])
 async def return_current_user_info(current_user: User = Depends(get_current_active_user)):
     """
-    Display current logged in user information
+    Display current logged-in user information
     """
     return current_user
 
@@ -119,7 +119,6 @@ async def create_user():
     """
     Create an example user (demo/demo)
     """
-
     await User(
         username="demo",
         fullname="Demo User",
@@ -133,9 +132,9 @@ async def create_user():
 @app.get("/reviews/", response_model=LimitOffsetPage[Review_Pydantic], tags=["Review"])
 async def fetch_all_reviews():
     """
-    Return all available reviews®
+    Return all available reviews
     """
-    return await paginate(Review)  # review_pydantic.from_queryset(Review.all()))
+    return await paginate(Review)
 
 
 @app.post("/add/", response_model=Review_Pydantic, tags=["Review"])
@@ -144,16 +143,13 @@ async def create_a_new_review(review: ReviewIn_Pydantic):
     Create a new review
     """
     review_obj = await Review.create(**review.dict(exclude_unset=True))
-    #     return {"status":"ok"}
     return await Review_Pydantic.from_tortoise_orm(review_obj)
 
 
-@app.delete("/delete/{hello_id}", response_model=Status, responses={404: {"model": HTTPNotFoundError}}, tags=["Review"])
+@app.delete("/delete/{review_id}", response_model=Status, responses={404: {"model": HTTPNotFoundError}}, tags=["Review"])
 async def delete_review(review_id: int):
     """
-    Delete existing review
-    :param review_id:
-    :return:
+    Delete existing review by id
     """
     deleted_review = await Review.filter(id=review_id).delete()
     if not deleted_review:
