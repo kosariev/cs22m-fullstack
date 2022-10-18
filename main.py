@@ -119,13 +119,16 @@ async def create_user():
     """
     Create an example user (demo/demo)
     """
-    await User(
-        username="demo",
-        fullname="Demo User",
-        email="demo@demo.local",
-        hashed_password=base64.b64encode("demo".encode('ascii')).decode('ascii'),
-        disabled=False
-    ).save()
+
+    initiated = await User_Pydantic.from_queryset_single(User.get(username="demo"))
+    if not initiated:
+        await User(
+            username="demo",
+            fullname="Demo User",
+            email="demo@demo.local",
+            hashed_password=base64.b64encode("demo".encode('ascii')).decode('ascii'),
+            disabled=False
+        ).save()
     return {"status": "ok"}
 
 
