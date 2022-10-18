@@ -7,6 +7,7 @@ from tortoise.contrib.pydantic import pydantic_model_creator
 from pydantic import BaseModel
 from models import Review, Review_Pydantic, ReviewIn_Pydantic, User, User_Pydantic
 import base64
+import tortoise.exceptions
 
 tags_metadata = [{
     "name": "Application",
@@ -105,23 +106,15 @@ async def entrypoint():
     return {"message": "Hello World"}
 
 
-@app.get("/review/{review_id}", response_model=Review_Pydantic, responses={404: {"model": HTTPNotFoundError}},
-         tags=["Review"])
-async def get_a_single_review_by_id(review_id: int):
-    """
-    Get a single review by id
-    """
-    return await Review_Pydantic.from_queryset_single(Review.get(id=review_id))
-
-
 @app.get("/init/", tags=["User"])
 async def create_user():
     """
     Create an example user (demo/demo)
     """
 
-    initiated = await User_Pydantic.from_queryset_single(User.get(username="demo"))
-    if not initiated:
+    try:
+        obj = await User.get(username="demo")
+    except tortoise.exceptions.DoesNotExist:
         await User(
             username="demo",
             fullname="Demo User",
@@ -138,6 +131,15 @@ async def fetch_all_reviews():
     Return all available reviews
     """
     return await paginate(Review)
+
+
+@app.get("/review/{review_id}", response_model=Review_Pydantic, responses={404: {"model": HTTPNotFoundError}},
+         tags=["Review"])
+async def get_a_single_review_by_id(review_id: int):
+    """
+    Get a single review by id
+    """
+    return await Review_Pydantic.from_queryset_single(Review.get(id=review_id))
 
 
 @app.post("/add/", response_model=Review_Pydantic, tags=["Review"])

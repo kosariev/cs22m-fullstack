@@ -1,10 +1,11 @@
 import asyncio
 import pytest
+import requests
 
 from typing import Generator
 from fastapi.testclient import TestClient
 from main import app
-from models import User
+from models import User, User_Pydantic
 from tortoise.contrib.test import finalizer, initializer
 
 
@@ -27,17 +28,17 @@ def test_read_main(client: TestClient, event_loop: asyncio.AbstractEventLoop):
     assert response.json() == {"message": "Hello World"}
 
 
-def test_init_user(client: TestClient, event_loop: asyncio.AbstractEventLoop):
-    response = await client.get("/init/")
+def test_init_user(event_loop: asyncio.AbstractEventLoop):
+    response = requests.get("http://127.0.0.1:8000/init/")
     assert response.status_code == 200, response.text
     assert response.json() == {"status": "ok"}
 
-    # async def get_user_by_db():
-    #     user = await User.get(username="demo")
-    #     return user
-    #
-    # user_obj = event_loop.run_until_complete(get_user_by_db())
-    # assert user_obj.username == "demo"
+    def get_user_by_db():
+        user = User_Pydantic.from_queryset_single(User.get(username="demo"))
+        return user
+
+    user_obj = event_loop.run_until_complete(get_user_by_db())
+    assert user_obj.username == "demo"
 
 
 def test_security_oauth2(client: TestClient, event_loop: asyncio.AbstractEventLoop):
