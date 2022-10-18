@@ -34,27 +34,6 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Dependency Review
-      uses: actions/dependency-review-action@v2.5.0
-      #with:
-        # Token for the repository. Can be passed in using `{{ secrets.GITHUB_TOKEN }}`.
-        #repo-token: # optional, default is ${{ github.token }}
-        # Don't block PRs below this severity. Possible values are `low`, `moderate`, `high`, `critical`.
-        #fail-on-severity: # optional, default is low
-        # Dependency scopes to block PRs on. Comma-separated list. Possible values are 'unknown', 'runtime', and 'development' (e.g. "runtime, development")
-        #fail-on-scopes: # optional, default is runtime
-        # The base git ref to be used for this check. Has a default value when the workflow event is `pull_request` or `pull_request_target`. Must be provided otherwise.
-        #base-ref: # optional
-        # The head git ref to be used for this check. Has a default value when the workflow event is `pull_request` or `pull_request_target`. Must be provided otherwise.
-        #head-ref: # optional
-        # A filepath to the configuration file for the action.
-        #config-file: # optional
-        # Comma-separated list of allowed licenses (e.g. "MIT, GPL 3.0, BSD 2 Clause")
-        #allow-licenses: # optional
-        # Comma-separated list of forbidden licenses (e.g. "MIT, GPL 3.0, BSD 2 Clause")
-        #deny-licenses: # optional
-        # Comma-separated list of allowed Github Advisory IDs (e.g. "GHSA-abcd-1234-5679, GHSA-efgh-1234-5679")
-        #allow-ghsas: # optional
 #    - name: Test with pytest
 #      run: |
 #        pytest
