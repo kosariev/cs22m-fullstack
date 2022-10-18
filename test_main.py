@@ -28,8 +28,8 @@ def test_read_main(client: TestClient, event_loop: asyncio.AbstractEventLoop):
     assert response.json() == {"message": "Hello World"}
 
 
-def test_init_user(event_loop: asyncio.AbstractEventLoop):
-    response = requests.get("http://127.0.0.1:8000/init/")
+def test_init_user(client: TestClient, event_loop: asyncio.AbstractEventLoop):
+    response = client.get("/init/")
     assert response.status_code == 200, response.text
     assert response.json() == {"status": "ok"}
 
