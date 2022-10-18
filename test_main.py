@@ -32,12 +32,12 @@ def test_init_user(client: TestClient, event_loop: asyncio.AbstractEventLoop):
     assert response.status_code == 200, response.text
     assert response.json() == {"status": "ok"}
 
-    async def get_user_by_db():
-        user = await User.get(username="demo")
-        return user
-
-    user_obj = event_loop.run_until_complete(get_user_by_db())
-    assert user_obj.username == "demo"
+    # async def get_user_by_db():
+    #     user = await User.get(username="demo")
+    #     return user
+    #
+    # user_obj = event_loop.run_until_complete(get_user_by_db())
+    # assert user_obj.username == "demo"
 
 
 def test_security_oauth2(client: TestClient, event_loop: asyncio.AbstractEventLoop):
