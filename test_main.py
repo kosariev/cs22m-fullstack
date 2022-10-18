@@ -28,7 +28,7 @@ def test_read_main(client: TestClient, event_loop: asyncio.AbstractEventLoop):
 
 
 def test_init_user(client: TestClient, event_loop: asyncio.AbstractEventLoop):
-    response = client.get("/init/")
+    response = await client.get("/init/")
     assert response.status_code == 200, response.text
     assert response.json() == {"status": "ok"}
 
