@@ -34,4 +34,16 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        pytest
+        pytest --doctest-modules --junitxml=test-results.xml --cov=. --cov-report=xml:coverage.xml
+    - name: Upload pytest test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: pytest-results
+        path: test-results.xml
+        if: ${{ always() }}
+    - name: Upload pytest coverage results
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-results
+        path: coverage.xml
+        if: ${{ always() }}
