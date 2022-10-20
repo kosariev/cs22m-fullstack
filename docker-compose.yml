@@ -1,0 +1,10 @@
+version: '2.4'
+services:
+  fullstack:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+     - "TZ=Europe/Kiev"
+    ports:
+      - "9000:9000"
