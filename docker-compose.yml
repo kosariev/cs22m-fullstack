@@ -8,3 +8,11 @@ services:
      - "TZ=Europe/Kiev"
     ports:
       - "9000:9000"
+  exam:
+    build:
+      context: ./
+      dockerfile: Dockerfile_exam
+    environment:
+     - "TZ=Europe/Kiev"
+    ports:
+      - "9001:9001"
