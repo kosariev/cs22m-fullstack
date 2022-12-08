@@ -1,5 +1,5 @@
 .coverage
 .env/
 .idea/
-library*
+*.db*
 *.xml
